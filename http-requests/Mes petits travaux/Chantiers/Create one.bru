@@ -1,0 +1,17 @@
+meta {
+  name: Create one
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:3000/chantiers
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Chantier 1"
+  }
+}

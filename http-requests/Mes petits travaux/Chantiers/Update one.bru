@@ -1,0 +1,17 @@
+meta {
+  name: Update one
+  type: http
+  seq: 5
+}
+
+patch {
+  url: http://localhost:3000/chantiers/6693eae423850cb2ae742106
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "description": "Ma description 2"
+  }
+}
