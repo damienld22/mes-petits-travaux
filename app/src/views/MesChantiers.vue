@@ -9,6 +9,12 @@
     <v-card-text v-if="chantier.description">{{
       chantier.description
     }}</v-card-text>
+    <v-card-text
+      >Date estimée :
+      {{
+        dayjs(chantier.estimatedDate, "YYYY-MM-DD").format("DD/MM/YYYY")
+      }}</v-card-text
+    >
   </v-card>
 
   <v-btn class="addButton" @click="push({ name: 'addChantier' })"
@@ -21,13 +27,16 @@ import { ref, onMounted } from "vue";
 import { Chantier } from "../types/Chantier";
 import { getAllChantiers } from "../services/ChantiersService";
 import { useRouter } from "vue-router";
+import dayjs from "dayjs";
 
 const chantiers = ref<Chantier[]>([]);
 const { push } = useRouter();
 
 onMounted(() => {
   getAllChantiers().then((data) => {
-    chantiers.value = data;
+    chantiers.value = data.sort((a, b) => {
+      return dayjs(a.estimatedDate).isBefore(dayjs(b.estimatedDate)) ? -1 : 1;
+    });
   });
 });
 </script>

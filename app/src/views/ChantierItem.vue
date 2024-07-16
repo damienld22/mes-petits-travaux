@@ -12,8 +12,36 @@
   <div v-else>
     <p v-if="chantier">{{ chantier.description }}</p>
     <p v-if="chantier">
-      Date estimée : {{ dayjs(chantier?.estimatedDate).format("DD/MM/YYYY") }}
+      Date estimée : {{ dayjs(chantier.estimatedDate).format("DD/MM/YYYY") }}
     </p>
+  </div>
+
+  <div>
+    <p class="subTitle">Travaux</p>
+
+    <v-card
+      class="card"
+      elevated
+      v-for="travail of travaux"
+      @click="push({ name: 'travailItem', params: { id: travail._id } })"
+    >
+      <v-card-title>{{ travail.name }}</v-card-title>
+      <v-card-text v-if="travail.description">{{
+        travail.description
+      }}</v-card-text>
+      <v-card-text>
+        <span>Par pro : </span>
+        <v-icon icon>{{
+          travail?.parProfessionnel
+            ? "fa-solid fa-circle-check"
+            : "fa-solid fa-circle-xmark"
+        }}</v-icon>
+      </v-card-text>
+    </v-card>
+  </div>
+
+  <div class="buttons">
+    <v-btn @click="push({ name: 'addTravail' })">Ajouter un travail</v-btn>
   </div>
 
   <div v-if="chantier && !editionMode" class="buttons">
@@ -31,17 +59,21 @@ import {
   deleteChantier,
   editChantier,
   getChantier,
+  getTravauxChantier,
 } from "../services/ChantiersService";
 import ChantierFormComponent from "../components/ChantierFormComponent.vue";
+import { Travail } from "../types/Travail";
 
 const { params } = useRoute();
 const { push } = useRouter();
 const chantier = ref<Chantier>();
+const travaux = ref<Travail[]>([]);
 const editionMode = ref(false);
 
 onMounted(async () => {
   if (params.id) {
     chantier.value = await getChantier(params.id as string);
+    travaux.value = await getTravauxChantier(params.id as string);
   }
 });
 
@@ -75,10 +107,25 @@ const onDelete = async () => {
   font-size: 1.6em;
 }
 
+.subTitle {
+  font-size: 1.2em;
+  margin-left: 5vw;
+  margin-top: 2vh;
+  font-style: italic;
+  text-decoration: underline;
+}
+
 .buttons {
   margin-top: 2vh;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+}
+
+.card {
+  margin-left: 2vw;
+  margin-right: 2vw;
+  margin-top: 2vh;
+  margin-bottom: 2vh;
 }
 </style>

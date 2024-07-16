@@ -12,7 +12,7 @@ export class Chantier {
   description?: string;
 
   @Prop()
-  estimatedDate?: string;
+  estimatedDate: string;
 }
 
 export const ChantierSchema = SchemaFactory.createForClass(Chantier);
