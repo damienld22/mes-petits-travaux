@@ -1,8 +1,8 @@
 export type Chantier = {
-  id: string;
+  _id: string;
   name: string;
   description?: string;
   estimatedDate?: string;
 };
 
-export type ChantierForm = Omit<Chantier, "id">;
+export type ChantierForm = Omit<Chantier, "_id">;
