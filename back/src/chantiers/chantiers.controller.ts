@@ -30,6 +30,11 @@ export class ChantiersController {
     return this.chantiersService.findOne(id);
   }
 
+  @Get(':id/travaux')
+  findOneTravaux(@Param('id') id: string) {
+    return this.chantiersService.findOneTravaux(id);
+  }
+
   @Patch(':id')
   update(
     @Param('id') id: string,
@@ -39,7 +44,8 @@ export class ChantiersController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.chantiersService.remove(id);
+  async remove(@Param('id') id: string) {
+    const deletedChantier = await this.chantiersService.remove(id);
+    return deletedChantier;
   }
 }

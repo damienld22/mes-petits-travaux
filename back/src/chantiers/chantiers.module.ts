@@ -3,6 +3,7 @@ import { ChantiersService } from './chantiers.service';
 import { ChantiersController } from './chantiers.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Chantier, ChantierSchema } from 'src/types/Chantier';
+import { Travail, TravailSchema } from 'src/types/Travail';
 
 @Module({
   imports: [
@@ -10,6 +11,12 @@ import { Chantier, ChantierSchema } from 'src/types/Chantier';
       {
         name: Chantier.name,
         schema: ChantierSchema,
+      },
+    ]),
+    MongooseModule.forFeature([
+      {
+        name: Travail.name,
+        schema: TravailSchema,
       },
     ]),
   ],

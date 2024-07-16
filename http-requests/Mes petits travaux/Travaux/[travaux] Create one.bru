@@ -1,0 +1,20 @@
+meta {
+  name: [travaux] Create one
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:3000/travaux
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Travail 3",
+    "description": "ldfdsfds",
+    "chantierId": "66941942a2f3c537350954d9",
+    "parProfessionnel": true
+  }
+}
