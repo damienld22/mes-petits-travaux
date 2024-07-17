@@ -1,0 +1,65 @@
+name: BDeploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build and push Docker image for backend
+        uses: docker/build-push-action@v2
+        with:
+          context: ./back
+          file: ./back/Dockerfile
+          tags: back
+          load: true
+
+  build-frontend:
+    runs-on: ubuntu-latest
+    needs: build-backend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build and push Docker image for frontend
+        uses: docker/build-push-action@v2
+        with:
+          context: ./app
+          file: ./app/Dockerfile
+          tags: front
+          load: true
+
+  deploy-to-server:
+    runs-on: ubuntu-latest
+    needs: build-frontend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Save front
+        run: docker save front -o front.tar
+      - name: Save back
+        run: docker save back -o back.tar
+      - name: Copy front to server
+        run: sshpass -p "${{ secrets.PASSWORD_HOST }}" scp back.tar ${{ secrets.USER_HOST }}@${{ secrets.HOST }}:~/
+      - name: Copy back to server
+        run: sshpass -p "${{ secrets.PASSWORD_HOST }}" scp front.tar ${{ secrets.USER_HOST }}@${{ secrets.HOST }}:~/
+      - name: Load front
+        run: sshpass -p "${{ secrets.PASSWORD_HOST }}" ssh ${{ secrets.USER_HOST }}@${{ secrets.HOST }} "docker load -i ~/front.tar"
+      - name: Load back
+        run: sshpass -p "${{ secrets.PASSWORD_HOST }}" ssh ${{ secrets.USER_HOST }}@${{ secrets.HOST }} "docker load -i ~/back.tar"
+      - name: Copy docker-compose to server
+        run: sshpass -p "${{ secrets.PASSWORD_HOST }}" scp docker-compose.prod.yml ${{ secrets.USER_HOST }}@${{ secrets.HOST }}:~/docker-compose.yml
+      - name: Launch docker compose
+        run: sshpass -p "${{ secrets.PASSWORD_HOST }}" ssh ${{ secrets.USER_HOST }}@${{ secrets.HOST }} "docker-compose -f ~/docker-compose.yml up -d"
