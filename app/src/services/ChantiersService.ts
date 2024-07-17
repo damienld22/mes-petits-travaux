@@ -2,7 +2,7 @@ import axios from "axios";
 import { Chantier, ChantierForm } from "../types/Chantier";
 import { Travail } from "../types/Travail";
 
-const ROOT_URL = "http://localhost:3000";
+const ROOT_URL = "/api";
 
 export async function getAllChantiers(): Promise<Chantier[]> {
   const url = `${ROOT_URL}/chantiers`;

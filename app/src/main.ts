@@ -19,6 +19,7 @@ import { aliases, fa } from "vuetify/iconsets/fa";
 import ChantierItem from "./views/ChantierItem.vue";
 import AjoutTravail from "./views/AjoutTravail.vue";
 import TravailItem from "./views/TravailItem.vue";
+import NotFound from "./components/NotFound.vue";
 
 const vuetify = createVuetify({
   components,
@@ -65,6 +66,10 @@ const routes = [
   { path: "/materiaux", component: Materiaux, name: "materiaux" },
   { path: "/materiels", component: Materiels, name: "materiels" },
   { path: "/", redirect: "/chantiers" },
+  {
+    path: "/:pathMatch(.*)*",
+    component: NotFound,
+  },
 ];
 
 const router = createRouter({

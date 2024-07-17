@@ -2,7 +2,12 @@
 
 ## To do
 
-- [ ] Init app
-- [ ] CRUD chantiers avec persistence
-- [ ] App initialisée
-- [ ] Liste des chantiers sur l'app
+## Build and deploy
+
+```sh
+$ cd back
+$ docker build -t back .
+$ cd front
+$ docker build -t front .
+$ # Copy docker-compose.prod.yml to server
+```

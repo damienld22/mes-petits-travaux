@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Travail, TravailForm } from "../types/Travail";
 
-const ROOT_URL = "http://localhost:3000";
+const ROOT_URL = "/api";
 
 export async function createTravail(body: TravailForm): Promise<Travail> {
   const url = `${ROOT_URL}/travaux`;
