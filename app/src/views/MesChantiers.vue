@@ -17,7 +17,7 @@
     >
   </v-card>
 
-  <v-btn class="addButton" @click="push({ name: 'addChantier' })"
+  <v-btn color="grey" class="addButton" @click="push({ name: 'addChantier' })"
     >Ajouter un chantier</v-btn
   >
 </template>
