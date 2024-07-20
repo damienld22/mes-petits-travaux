@@ -2,6 +2,8 @@
 
 ## To do
 
+- [ ] PWA
+
 ## Build and deploy
 
 ```sh
