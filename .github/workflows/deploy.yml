@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build-backend:
+  build-and-deploy-backend:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -15,17 +15,15 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
-      - name: Build and push Docker image for backend
-        uses: docker/build-push-action@v2
-        with:
-          context: ./back
-          file: ./back/Dockerfile
-          tags: back
-          load: true
+      - name: Build Docker and deploy image for backend
+        run: cd back && docker build -t back . && docker save back -o back.tar && sshpass -p "$PASSWORD_HOST" scp back.tar $USER_HOST@$HOST:~/
+        env:
+          PASSWORD_HOST: ${{ secrets.PASSWORD_HOST }}
+          USER_HOST: ${{ secrets.USER_HOST }}
+          HOST: ${{ secrets.HOST }}
 
-  build-frontend:
+  build-and-deploy-frontend:
     runs-on: ubuntu-latest
-    needs: build-backend
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -33,33 +31,42 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
-      - name: Build and push Docker image for frontend
-        uses: docker/build-push-action@v2
-        with:
-          context: ./app
-          file: ./app/Dockerfile
-          tags: front
-          load: true
+      - name: Build Docker image an deploy for frontend
+        run: cd app && docker build -t front . && docker save front -o front.tar && sshpass -p "$PASSWORD_HOST" scp front.tar $USER_HOST@$HOST:~/
+        env:
+          PASSWORD_HOST: ${{ secrets.PASSWORD_HOST }}
+          USER_HOST: ${{ secrets.USER_HOST }}
+          HOST: ${{ secrets.HOST }}
 
-  deploy-to-server:
+  lunch-docker-compose:
     runs-on: ubuntu-latest
-    needs: build-frontend
+    needs:
+      - build-and-deploy-backend
+      - build-and-deploy-frontend
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Save front
-        run: docker save front -o front.tar
-      - name: Save back
-        run: docker save back -o back.tar
-      - name: Copy front to server
-        run: sshpass -p "${{ secrets.PASSWORD_HOST }}" scp back.tar ${{ secrets.USER_HOST }}@${{ secrets.HOST }}:~/
-      - name: Copy back to server
-        run: sshpass -p "${{ secrets.PASSWORD_HOST }}" scp front.tar ${{ secrets.USER_HOST }}@${{ secrets.HOST }}:~/
       - name: Load front
-        run: sshpass -p "${{ secrets.PASSWORD_HOST }}" ssh ${{ secrets.USER_HOST }}@${{ secrets.HOST }} "docker load -i ~/front.tar"
+        run: sshpass -p "$PASSWORD_HOST" ssh $USER_HOST@$HOST "docker load -i ~/front.tar"
+        env:
+          PASSWORD_HOST: ${{ secrets.PASSWORD_HOST }}
+          USER_HOST: ${{ secrets.USER_HOST }}
+          HOST: ${{ secrets.HOST }}
       - name: Load back
-        run: sshpass -p "${{ secrets.PASSWORD_HOST }}" ssh ${{ secrets.USER_HOST }}@${{ secrets.HOST }} "docker load -i ~/back.tar"
+        run: sshpass -p "$PASSWORD_HOST" ssh $USER_HOST@$HOST "docker load -i ~/back.tar"
+        env:
+          PASSWORD_HOST: ${{ secrets.PASSWORD_HOST }}
+          USER_HOST: ${{ secrets.USER_HOST }}
+          HOST: ${{ secrets.HOST }}
       - name: Copy docker-compose to server
-        run: sshpass -p "${{ secrets.PASSWORD_HOST }}" scp docker-compose.prod.yml ${{ secrets.USER_HOST }}@${{ secrets.HOST }}:~/docker-compose.yml
+        run: sshpass -p "$PASSWORD_HOST" scp docker-compose.prod.yml $USER_HOST@$HOST:~/docker-compose.yml
+        env:
+          PASSWORD_HOST: ${{ secrets.PASSWORD_HOST }}
+          USER_HOST: ${{ secrets.USER_HOST }}
+          HOST: ${{ secrets.HOST }}
       - name: Launch docker compose
-        run: sshpass -p "${{ secrets.PASSWORD_HOST }}" ssh ${{ secrets.USER_HOST }}@${{ secrets.HOST }} "docker-compose -f ~/docker-compose.yml up -d"
+        run: sshpass -p "$PASSWORD_HOST" ssh $USER_HOST@$HOST "docker-compose -f ~/docker-compose.yml up -d"
+        env:
+          PASSWORD_HOST: ${{ secrets.PASSWORD_HOST }}
+          USER_HOST: ${{ secrets.USER_HOST }}
+          HOST: ${{ secrets.HOST }}
