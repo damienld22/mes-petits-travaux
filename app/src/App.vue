@@ -1,12 +1,12 @@
 <template>
   <v-app>
-    <v-app-bar title="Mes petits travaux"></v-app-bar>
+    <v-app-bar style="text-align: center; background-color: #b1e4e6fd;" title="Mes petits travaux"></v-app-bar>
 
     <div class="content">
       <RouterView />
     </div>
 
-    <v-bottom-navigation grow :model-value="route.name">
+    <v-bottom-navigation style="background-color: lightgray;" grow :model-value="route.name">
       <v-btn @click="onClick('chantiers')" value="chantiers">
         <v-icon>fa-solid fa-person-digging</v-icon>
         <span>Chantiers</span>
@@ -42,4 +42,5 @@ const onClick = (value: string) => router.push({ name: value });
   margin-bottom: 56px; /* Bottom navigation */
   overflow: auto;
 }
+
 </style>

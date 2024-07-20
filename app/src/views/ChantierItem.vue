@@ -2,29 +2,21 @@
   <p class="title" v-if="chantier">{{ chantier?.name }}</p>
 
   <div v-if="editionMode">
-    <ChantierFormComponent
-      :default-value="chantier"
-      @cancel="editionMode = false"
-      @validate="onValidateEdition"
-    />
+    <ChantierFormComponent :default-value="chantier" @cancel="editionMode = false" @validate="onValidateEdition" />
   </div>
 
-  <div v-else>
-    <p v-if="chantier">{{ chantier.description }}</p>
+  <div v-else class="center-text">
+    <p v-if="chantier">Description : {{ chantier.description }}</p>
     <p v-if="chantier">
       Date estimée : {{ dayjs(chantier.estimatedDate).format("DD/MM/YYYY") }}
     </p>
   </div>
 
   <div>
-    <p class="subTitle">Travaux</p>
+    <p class="subTitle">Travaux : </p>
 
-    <v-card
-      class="card"
-      elevated
-      v-for="travail of travaux"
-      @click="push({ name: 'travailItem', params: { id: travail._id } })"
-    >
+    <v-card class="card" elevated v-for="travail of travaux"
+      @click="push({ name: 'travailItem', params: { id: travail._id } })">
       <v-card-title>{{ travail.name }}</v-card-title>
       <v-card-text v-if="travail.description">{{
         travail.description
@@ -33,20 +25,20 @@
         <span>Par pro : </span>
         <v-icon icon>{{
           travail?.parProfessionnel
-            ? "fa-solid fa-circle-check"
-            : "fa-solid fa-circle-xmark"
+          ? "fa-solid fa-circle-check"
+          : "fa-solid fa-circle-xmark"
         }}</v-icon>
       </v-card-text>
     </v-card>
   </div>
 
   <div class="buttons">
-    <v-btn @click="push({ name: 'addTravail' })">Ajouter un travail</v-btn>
+    <v-btn  color="grey" @click="push({ name: 'addTravail' })">Ajouter un travail</v-btn>
   </div>
 
   <div v-if="chantier && !editionMode" class="buttons">
-    <v-btn @click="onDelete">Supprimer</v-btn>
-    <v-btn @click="editionMode = true">Editer</v-btn>
+    <v-btn color="grey" @click="onDelete">Supprimer</v-btn>
+    <v-btn color="grey" @click="editionMode = true">Editer</v-btn>
   </div>
 </template>
 
@@ -104,7 +96,7 @@ const onDelete = async () => {
   text-align: center;
   margin-top: 2vh;
   margin-bottom: 5vh;
-  font-size: 1.6em;
+  font-size: 1.8em;
 }
 
 .subTitle {
@@ -113,6 +105,7 @@ const onDelete = async () => {
   margin-top: 2vh;
   font-style: italic;
   text-decoration: underline;
+  text-align: center;
 }
 
 .buttons {
@@ -127,5 +120,9 @@ const onDelete = async () => {
   margin-right: 2vw;
   margin-top: 2vh;
   margin-bottom: 2vh;
+}
+
+.center-text {
+  text-align: center;
 }
 </style>
