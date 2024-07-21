@@ -14,6 +14,8 @@ services:
     environment:
       - NODE_ENV=production
       - MONGODB_URI=mongodb://mongodb/mes-petits-chantiers
+    volumes:
+      - ./.env:/usr/src/app/.env
 
   front:
     container_name: front
