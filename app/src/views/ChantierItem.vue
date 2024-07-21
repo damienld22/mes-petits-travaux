@@ -2,7 +2,11 @@
   <p class="title" v-if="chantier">{{ chantier?.name }}</p>
 
   <div v-if="editionMode">
-    <ChantierFormComponent :default-value="chantier" @cancel="editionMode = false" @validate="onValidateEdition" />
+    <ChantierFormComponent
+      :default-value="chantier"
+      @cancel="editionMode = false"
+      @validate="onValidateEdition"
+    />
   </div>
 
   <div v-else class="center-text">
@@ -10,30 +14,15 @@
     <p v-if="chantier">
       Date estimée : {{ dayjs(chantier.estimatedDate).format("DD/MM/YYYY") }}
     </p>
-  </div>
 
-  <div>
-    <p class="subTitle">Travaux : </p>
-
-    <v-card class="card" elevated v-for="travail of travaux"
-      @click="push({ name: 'travailItem', params: { id: travail._id } })">
-      <v-card-title>{{ travail.name }}</v-card-title>
-      <v-card-text v-if="travail.description">{{
-        travail.description
-      }}</v-card-text>
-      <v-card-text>
-        <span>Par pro : </span>
-        <v-icon icon>{{
-          travail?.parProfessionnel
+    <v-card-text>
+      <span>Par pro : </span>
+      <v-icon icon>{{
+        chantier?.parProfessionnel
           ? "fa-solid fa-circle-check"
           : "fa-solid fa-circle-xmark"
-        }}</v-icon>
-      </v-card-text>
-    </v-card>
-  </div>
-
-  <div class="buttons">
-    <v-btn  color="grey" @click="push({ name: 'addTravail' })">Ajouter un travail</v-btn>
+      }}</v-icon>
+    </v-card-text>
   </div>
 
   <div v-if="chantier && !editionMode" class="buttons">
@@ -51,21 +40,17 @@ import {
   deleteChantier,
   editChantier,
   getChantier,
-  getTravauxChantier,
 } from "../services/ChantiersService";
 import ChantierFormComponent from "../components/ChantierFormComponent.vue";
-import { Travail } from "../types/Travail";
 
 const { params } = useRoute();
 const { push } = useRouter();
 const chantier = ref<Chantier>();
-const travaux = ref<Travail[]>([]);
 const editionMode = ref(false);
 
 onMounted(async () => {
   if (params.id) {
     chantier.value = await getChantier(params.id as string);
-    travaux.value = await getTravauxChantier(params.id as string);
   }
 });
 

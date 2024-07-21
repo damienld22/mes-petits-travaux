@@ -30,11 +30,6 @@ export class ChantiersController {
     return this.chantiersService.findOne(id);
   }
 
-  @Get(':id/travaux')
-  findOneTravaux(@Param('id') id: string) {
-    return this.chantiersService.findOneTravaux(id);
-  }
-
   @Patch(':id')
   update(
     @Param('id') id: string,

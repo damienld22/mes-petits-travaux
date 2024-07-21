@@ -1,6 +1,5 @@
 import axios from "axios";
 import { Chantier, ChantierForm } from "../types/Chantier";
-import { Travail } from "../types/Travail";
 
 const ROOT_URL = "/api";
 
@@ -18,12 +17,6 @@ export async function createChantier(body: ChantierForm): Promise<Chantier> {
 
 export async function getChantier(id: string): Promise<Chantier> {
   const url = `${ROOT_URL}/chantiers/${id}`;
-  const { data } = await axios.get(url);
-  return data;
-}
-
-export async function getTravauxChantier(id: string): Promise<Travail[]> {
-  const url = `${ROOT_URL}/chantiers/${id}/travaux`;
   const { data } = await axios.get(url);
   return data;
 }

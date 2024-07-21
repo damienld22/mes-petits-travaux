@@ -17,8 +17,6 @@ import * as directives from "vuetify/directives";
 import { createRouter, createWebHistory } from "vue-router";
 import { aliases, fa } from "vuetify/iconsets/fa";
 import ChantierItem from "./views/ChantierItem.vue";
-import AjoutTravail from "./views/AjoutTravail.vue";
-import TravailItem from "./views/TravailItem.vue";
 import NotFound from "./components/NotFound.vue";
 
 const vuetify = createVuetify({
@@ -52,16 +50,6 @@ const routes = [
     path: "/chantiers/:id",
     name: "chantierItem",
     component: ChantierItem,
-  },
-  {
-    path: "/travaux/:id",
-    name: "travailItem",
-    component: TravailItem,
-  },
-  {
-    path: "/chantiers/:id/add-travail",
-    name: "addTravail",
-    component: AjoutTravail,
   },
   { path: "/materiaux", component: Materiaux, name: "materiaux" },
   { path: "/materiels", component: Materiels, name: "materiels" },

@@ -15,6 +15,15 @@
         dayjs(chantier.estimatedDate, "YYYY-MM-DD").format("DD/MM/YYYY")
       }}</v-card-text
     >
+
+    <v-card-text>
+      <span>Par pro : </span>
+      <v-icon icon>{{
+        chantier.parProfessionnel
+          ? "fa-solid fa-circle-check"
+          : "fa-solid fa-circle-xmark"
+      }}</v-icon>
+    </v-card-text>
   </v-card>
 
   <v-btn color="grey" class="addButton" @click="push({ name: 'addChantier' })"

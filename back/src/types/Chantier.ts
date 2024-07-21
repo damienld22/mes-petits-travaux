@@ -13,6 +13,9 @@ export class Chantier {
 
   @Prop()
   estimatedDate: string;
+
+  @Prop()
+  parProfessionnel: boolean;
 }
 
 export const ChantierSchema = SchemaFactory.createForClass(Chantier);

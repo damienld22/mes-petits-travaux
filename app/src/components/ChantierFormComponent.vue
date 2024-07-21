@@ -9,6 +9,12 @@
       v-model="estimatedDate"
     ></v-date-input>
 
+    <v-switch
+      v-model="parProfessionnel"
+      label="Fait par professionnel"
+      color="green"
+    ></v-switch>
+
     <div class="buttons">
       <v-btn @click="emit('cancel')">Annuler</v-btn>
       <v-btn @click="onValidate" type="submit">Valider</v-btn>
@@ -31,6 +37,7 @@ const description = ref(props.defaultValue?.description);
 const estimatedDate = ref(
   dayjs(props.defaultValue?.estimatedDate, "YYYY-MM-DD").toDate()
 );
+const parProfessionnel = ref(props.defaultValue?.parProfessionnel);
 
 const onValidate = () => {
   if (!name.value || !estimatedDate.value) {
@@ -41,6 +48,7 @@ const onValidate = () => {
     name: name.value,
     description: description.value,
     estimatedDate: dayjs(estimatedDate.value).format("YYYY-MM-DD"),
+    parProfessionnel: !!parProfessionnel.value,
   });
 };
 
