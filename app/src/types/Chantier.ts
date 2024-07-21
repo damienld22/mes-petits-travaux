@@ -4,6 +4,7 @@ export type Chantier = {
   description?: string;
   estimatedDate: string;
   parProfessionnel: boolean;
+  listMateriels: string[];
 };
 
 export type ChantierForm = Omit<Chantier, "_id">;

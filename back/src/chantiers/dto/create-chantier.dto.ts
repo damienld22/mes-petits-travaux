@@ -3,4 +3,5 @@ export type CreateChantierDto = {
   description?: string;
   estimatedDate: string;
   parProfessionnel: boolean;
+  listMateriels: string[];
 };

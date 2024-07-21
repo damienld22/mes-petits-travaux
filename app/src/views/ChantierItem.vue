@@ -25,6 +25,18 @@
     </v-card-text>
   </div>
 
+  <div>
+    <p class="subTitle">Matériels nécessaires :</p>
+
+    <v-list lines="one">
+      <v-list-item
+        v-for="materiel in chantier?.listMateriels"
+        :key="materiel"
+        :title="getNameMaterielFromId(materiel)"
+      ></v-list-item>
+    </v-list>
+  </div>
+
   <div v-if="chantier && !editionMode" class="buttons">
     <v-btn color="grey" @click="onDelete">Supprimer</v-btn>
     <v-btn color="grey" @click="editionMode = true">Editer</v-btn>
@@ -42,17 +54,24 @@ import {
   getChantier,
 } from "../services/ChantiersService";
 import ChantierFormComponent from "../components/ChantierFormComponent.vue";
+import { Materiel } from "../types/Materiel";
+import { getAllMateriels } from "../services/MaterielsService";
 
 const { params } = useRoute();
 const { push } = useRouter();
 const chantier = ref<Chantier>();
 const editionMode = ref(false);
+const availableMateriels = ref<Materiel[]>([]);
 
 onMounted(async () => {
   if (params.id) {
     chantier.value = await getChantier(params.id as string);
+    availableMateriels.value = await getAllMateriels();
   }
 });
+
+const getNameMaterielFromId = (id: string) =>
+  availableMateriels.value.find((m) => m._id === id)?.name;
 
 const onValidateEdition = async (form: ChantierForm) => {
   editionMode.value = false;

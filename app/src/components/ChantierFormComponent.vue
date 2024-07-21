@@ -15,6 +15,26 @@
       color="green"
     ></v-switch>
 
+    <v-autocomplete
+      v-model="materiels"
+      :items="availableMateriels"
+      color="blue-grey-lighten-2"
+      item-title="name"
+      item-value="_id"
+      label="Matériels nécessaires"
+      chips
+      closable-chips
+      multiple
+    >
+      <template v-slot:chip="{ props, item }">
+        <v-chip v-bind="props" :text="item.raw.name"></v-chip>
+      </template>
+
+      <template v-slot:item="{ props, item }">
+        <v-list-item v-bind="props" :title="item.raw.name"></v-list-item>
+      </template>
+    </v-autocomplete>
+
     <div class="buttons">
       <v-btn @click="emit('cancel')">Annuler</v-btn>
       <v-btn @click="onValidate" type="submit">Valider</v-btn>
@@ -23,10 +43,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { Chantier, ChantierForm } from "../types/Chantier";
 import { VDateInput } from "vuetify/labs/VDateInput";
 import dayjs from "dayjs";
+import { Materiel } from "../types/Materiel";
+import { getAllMateriels } from "../services/MaterielsService";
 
 const props = defineProps<{
   defaultValue?: Chantier;
@@ -38,6 +60,12 @@ const estimatedDate = ref(
   dayjs(props.defaultValue?.estimatedDate, "YYYY-MM-DD").toDate()
 );
 const parProfessionnel = ref(props.defaultValue?.parProfessionnel);
+const availableMateriels = ref<Materiel[]>([]);
+const materiels = ref<string[]>(props.defaultValue?.listMateriels || []);
+
+onMounted(async () => {
+  availableMateriels.value = await getAllMateriels();
+});
 
 const onValidate = () => {
   if (!name.value || !estimatedDate.value) {
@@ -49,6 +77,7 @@ const onValidate = () => {
     description: description.value,
     estimatedDate: dayjs(estimatedDate.value).format("YYYY-MM-DD"),
     parProfessionnel: !!parProfessionnel.value,
+    listMateriels: materiels.value,
   });
 };
 

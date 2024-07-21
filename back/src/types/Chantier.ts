@@ -16,6 +16,9 @@ export class Chantier {
 
   @Prop()
   parProfessionnel: boolean;
+
+  @Prop()
+  listMateriels: string[];
 }
 
 export const ChantierSchema = SchemaFactory.createForClass(Chantier);
