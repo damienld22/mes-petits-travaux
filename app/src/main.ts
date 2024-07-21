@@ -1,7 +1,7 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 import MesChantiers from "./views/MesChantiers.vue";
-import Materiaux from "./views/Materiaux.vue";
+import TravauxFinis from "./views/TravauxFinis.vue";
 import Materiels from "./views/Materiels.vue";
 import AjoutChantier from "./views/AjoutChantier.vue";
 
@@ -64,7 +64,7 @@ const routes = [
     name: "materielItem",
     component: MaterielItem,
   },
-  { path: "/materiaux", component: Materiaux, name: "materiaux" },
+  { path: "/travaux-finis", component: TravauxFinis, name: "travauxFinis" },
   { path: "/", redirect: "/chantiers" },
   {
     path: "/:pathMatch(.*)*",

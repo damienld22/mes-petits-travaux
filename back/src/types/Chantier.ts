@@ -1,6 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 
+export type ChantierState = 'todo' | 'done' | 'inProgress';
+
 export type ChantierDocument = HydratedDocument<Chantier>;
 
 @Schema()
@@ -19,6 +21,9 @@ export class Chantier {
 
   @Prop()
   listMateriels: string[];
+
+  @Prop()
+  state: ChantierState;
 }
 
 export const ChantierSchema = SchemaFactory.createForClass(Chantier);

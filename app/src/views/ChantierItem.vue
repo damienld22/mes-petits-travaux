@@ -10,6 +10,7 @@
   </div>
 
   <div v-else class="center-text">
+    <ChantierState v-if="chantier" :chantier="chantier" />
     <p v-if="chantier">Description : {{ chantier.description }}</p>
     <p v-if="chantier">
       Date estimée : {{ dayjs(chantier.estimatedDate).format("DD/MM/YYYY") }}
@@ -56,6 +57,7 @@ import {
 import ChantierFormComponent from "../components/ChantierFormComponent.vue";
 import { Materiel } from "../types/Materiel";
 import { getAllMateriels } from "../services/MaterielsService";
+import ChantierState from "../components/ChantierState.vue";
 
 const { params } = useRoute();
 const { push } = useRouter();

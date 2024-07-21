@@ -15,6 +15,15 @@
       color="green"
     ></v-switch>
 
+    <v-select
+      v-if="props.defaultValue"
+      v-model="state"
+      label="État"
+      :items="availableEtats"
+      item-title="text"
+      item-value="value"
+    ></v-select>
+
     <v-autocomplete
       v-model="materiels"
       :items="availableMateriels"
@@ -44,7 +53,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import { Chantier, ChantierForm } from "../types/Chantier";
+import { Chantier, ChantierForm, ChantierState } from "../types/Chantier";
 import { VDateInput } from "vuetify/labs/VDateInput";
 import dayjs from "dayjs";
 import { Materiel } from "../types/Materiel";
@@ -62,6 +71,22 @@ const estimatedDate = ref(
 const parProfessionnel = ref(props.defaultValue?.parProfessionnel);
 const availableMateriels = ref<Materiel[]>([]);
 const materiels = ref<string[]>(props.defaultValue?.listMateriels || []);
+const state = ref<ChantierState>(props.defaultValue?.state || "todo");
+
+const availableEtats = [
+  {
+    value: "todo",
+    text: "À faire",
+  },
+  {
+    value: "inProgress",
+    text: "En cours",
+  },
+  {
+    value: "done",
+    text: "Terminé",
+  },
+];
 
 onMounted(async () => {
   availableMateriels.value = await getAllMateriels();
@@ -78,6 +103,7 @@ const onValidate = () => {
     estimatedDate: dayjs(estimatedDate.value).format("YYYY-MM-DD"),
     parProfessionnel: !!parProfessionnel.value,
     listMateriels: materiels.value,
+    state: state.value,
   });
 };
 
