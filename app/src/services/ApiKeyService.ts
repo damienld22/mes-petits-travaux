@@ -1,10 +1,7 @@
-import axios from "axios";
+import { api } from "../Api";
 
 export async function checkApiKey(apiKey: string): Promise<boolean> {
-  const ROOT_URL = "/api";
-
-  const url = `${ROOT_URL}`;
-  const { data } = await axios.get(url, {
+  const { data } = await api.get("/", {
     headers: {
       "x-api-key": apiKey,
     },
