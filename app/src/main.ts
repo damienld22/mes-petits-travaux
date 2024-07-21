@@ -1,9 +1,5 @@
 import { createApp } from "vue";
 import App from "./App.vue";
-import MesChantiers from "./views/MesChantiers.vue";
-import TravauxFinis from "./views/TravauxFinis.vue";
-import Materiels from "./views/Materiels.vue";
-import AjoutChantier from "./views/AjoutChantier.vue";
 
 import "./style.css";
 import "@mdi/font/css/materialdesignicons.css";
@@ -14,12 +10,8 @@ import "@fortawesome/fontawesome-free/css/all.css";
 import { createVuetify } from "vuetify";
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
-import { createRouter, createWebHistory } from "vue-router";
+import { router } from "./router";
 import { aliases, fa } from "vuetify/iconsets/fa";
-import ChantierItem from "./views/ChantierItem.vue";
-import NotFound from "./components/NotFound.vue";
-import AjoutMateriel from "./views/AjoutMateriel.vue";
-import MaterielItem from "./views/MaterielItem.vue";
 
 const vuetify = createVuetify({
   components,
@@ -34,47 +26,6 @@ const vuetify = createVuetify({
       fa,
     },
   },
-});
-
-// Router
-const routes = [
-  {
-    path: "/chantiers",
-    component: MesChantiers,
-    name: "chantiers",
-  },
-  {
-    path: "/add-chantiers",
-    name: "addChantier",
-    component: AjoutChantier,
-  },
-  {
-    path: "/chantiers/:id",
-    name: "chantierItem",
-    component: ChantierItem,
-  },
-  { path: "/materiels", component: Materiels, name: "materiels" },
-  {
-    path: "/add-materiels",
-    name: "addMateriel",
-    component: AjoutMateriel,
-  },
-  {
-    path: "/materiels/:id",
-    name: "materielItem",
-    component: MaterielItem,
-  },
-  { path: "/travaux-finis", component: TravauxFinis, name: "travauxFinis" },
-  { path: "/", redirect: "/chantiers" },
-  {
-    path: "/:pathMatch(.*)*",
-    component: NotFound,
-  },
-];
-
-const router = createRouter({
-  history: createWebHistory(),
-  routes,
 });
 
 createApp(App).use(router).use(vuetify).mount("#app");

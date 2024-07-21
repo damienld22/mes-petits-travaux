@@ -6,12 +6,15 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { MaterielsService } from './materiels.service';
 import { CreateMaterielDto } from './dto/create-materiel.dto';
 import { UpdateMaterielDto } from './dto/update-materiel.dto';
+import { ApiKeyGuard } from 'src/ApiKeyGuard';
 
 @Controller('materiels')
+@UseGuards(ApiKeyGuard)
 export class MaterielsController {
   constructor(private readonly materielsService: MaterielsService) {}
 
