@@ -28,6 +28,11 @@
         <v-icon>fas fa-check</v-icon>
         <span>Travaux finis</span>
       </v-btn>
+
+      <v-btn @click="onClick('notes')" value="notes">
+        <v-icon>fas fa-clipboard</v-icon>
+        <span>Notes</span>
+      </v-btn>
     </v-bottom-navigation>
   </v-app>
 </template>

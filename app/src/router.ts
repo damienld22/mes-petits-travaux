@@ -8,6 +8,7 @@ import ChantierItem from "./views/ChantierItem.vue";
 import AjoutChantier from "./views/AjoutChantier.vue";
 import MesChantiers from "./views/MesChantiers.vue";
 import Login from "./views/Login.vue";
+import Notes from "./views/Notes.vue";
 
 // Router
 const routes = [
@@ -43,6 +44,7 @@ const routes = [
     component: MaterielItem,
   },
   { path: "/travaux-finis", component: TravauxFinis, name: "travauxFinis" },
+  { path: "/notes", component: Notes, name: "notes" },
   { path: "/", redirect: "/chantiers" },
   {
     path: "/:pathMatch(.*)*",
