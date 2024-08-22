@@ -4,6 +4,12 @@
       <v-btn @click="onClean">Annuler</v-btn>
       <v-btn @click="onValidate">Valider</v-btn>
       <input type="color" v-model="color" />
+      <select v-model.number="lineWidth" class="selectLineWidth">
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="30">30</option>
+      </select>
     </div>
     <input
       v-if="!picture"
@@ -23,6 +29,7 @@ const picture = ref<File | null>(null);
 const canvas = ref<HTMLCanvasElement>();
 const coord = ref({ x: 0, y: 0 });
 const color = ref("#FF0000");
+const lineWidth = ref(5);
 
 const draw = (event: TouchEvent) => {
   const context = canvas.value!.getContext("2d")!;
@@ -30,7 +37,7 @@ const draw = (event: TouchEvent) => {
     event.preventDefault();
   }
   context.beginPath();
-  context.lineWidth = 5;
+  context.lineWidth = lineWidth.value;
   context.lineCap = "round";
   context.strokeStyle = color.value;
   context.moveTo(coord.value.x, coord.value.y);
@@ -144,5 +151,12 @@ canvas {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+}
+
+.selectLineWidth {
+  margin-left: 5px;
+  border: 1px solid;
+  width: 5vw;
+  border-radius: 10px;
 }
 </style>
